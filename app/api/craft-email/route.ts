@@ -31,7 +31,6 @@ export async function POST(request: NextRequest) {
       }, { status: 404 });
     }
 
-    // Use Groq LLM to generate email content
     const completion = await groq.chat.completions.create({
       messages: [
         { 
@@ -54,7 +53,6 @@ export async function POST(request: NextRequest) {
       }, { status: 500 });
     }
 
-    // If this is just a preview request, return the content
     if (previewOnly) {
       return NextResponse.json({ 
         emailContent,
@@ -64,7 +62,6 @@ export async function POST(request: NextRequest) {
 
     console.log('Starting to send emails to:', filteredCustomers.map(c => c.email));
 
-    // Send emails individually to each customer
     const emailPromises = filteredCustomers.map(async (customer) => {
       try {
         console.log(`Attempting to send email to ${customer.email}`);
@@ -78,8 +75,7 @@ export async function POST(request: NextRequest) {
           }),
         });
         console.log(`Email sent successfully to ${customer.email}`, result);
-        
-        // Add delay after sending each email
+
         await delay(1000);
         
         return { success: true, data: result };
@@ -89,11 +85,8 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    // Wait for all emails to be sent
     const results = await Promise.all(emailPromises);
-    console.log('Email sending results:', results);
 
-    // Count successful sends
     const successfulSends = results.filter(result => result.success).length;
     const failedSends = results.filter(result => !result.success).length;
 
@@ -110,7 +103,7 @@ export async function POST(request: NextRequest) {
       recipientCount: successfulSends,
       failedCount: failedSends,
       totalAttempted: filteredCustomers.length,
-      results: results // Include detailed results in response
+      results: results
     });
 
   } catch (error) {
