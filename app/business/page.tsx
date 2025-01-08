@@ -101,12 +101,10 @@ export default async function BusinessPage() {
     totalCustomers: 0
   })
 
-  // Calculate final averages
   metrics.avgGrowthRate = metrics.avgGrowthRate / metrics.totalCustomers
   metrics.avgOrderValue = metrics.avgOrderValue / metrics.totalCustomers
   metrics.avgSatisfaction = metrics.avgSatisfaction / metrics.totalCustomers
 
-  // Get AI predictions
   const predictions = await getPredictions(metrics)
 
   return (
