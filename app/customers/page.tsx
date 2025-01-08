@@ -48,13 +48,6 @@ export default async function CustomersPage() {
     const currentValue = extractPurchaseCount(current.purchaseHistory)
     const maxValue = extractPurchaseCount(max.purchaseHistory)
 
-    console.log('Comparing:', {
-      current: current.name,
-      currentValue,
-      max: max.name,
-      maxValue
-    })
-
     return currentValue > maxValue ? current : max
   }, customerData[0])
 
