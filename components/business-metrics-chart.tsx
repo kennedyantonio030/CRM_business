@@ -26,12 +26,10 @@ export default function BusinessMetricsChart({ data }: BusinessMetricsChartProps
       chartInstance.current.destroy()
     }
 
-    // Sort data by createdAt date
     const sortedData = [...data].sort((a, b) => 
       new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     )
 
-    // Get the labels from actual dates
     const labels = sortedData.map(d => 
       new Date(d.createdAt).toLocaleDateString('en-US', { month: 'short' })
     )
