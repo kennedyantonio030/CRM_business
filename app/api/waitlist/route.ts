@@ -9,20 +9,14 @@ const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export async function POST(request: Request) {
   try {
     const { email } = await request.json();
-
-    // Validate email format
     if (!emailRegex.test(email)) {
       return NextResponse.json({ message: "Invalid email format" }, { status: 400 });
     }
-
-    // Check if the email already exists in the waitlist
     const existingUser = await db.select().from(waitlistUsers).where(eq(waitlistUsers.email, email)).execute();
 
     if (existingUser.length > 0) {
       return NextResponse.json({ message: "Email already on the waitlist" }, { status: 400 });
     }
-
-    // Insert the new email into the waitlist table
     await db.insert(waitlistUsers).values({
       email,
     }).execute();

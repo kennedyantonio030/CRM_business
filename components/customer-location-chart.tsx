@@ -28,12 +28,10 @@ export default function CustomerLocationChart({ customers }: CustomerLocationCha
   useEffect(() => {
     if (!chartRef.current) return
 
-    // Clean up previous chart instance
     if (chartInstance.current) {
       chartInstance.current.destroy()
     }
 
-    // Process data for the chart
     const stateOrderCounts = customers.reduce((acc: { [key: string]: number }, customer) => {
       const state = customer.state || 'Unknown'
       const purchases = extractPurchaseCount(customer.purchaseHistory)
@@ -41,7 +39,6 @@ export default function CustomerLocationChart({ customers }: CustomerLocationCha
       return acc
     }, {})
 
-    // Sort states by order count and take top 8
     const topStates = Object.entries(stateOrderCounts)
       .sort(([, a], [, b]) => b - a)
       .slice(0, 8)
@@ -79,7 +76,7 @@ export default function CustomerLocationChart({ customers }: CustomerLocationCha
           legend: {
             position: 'right',
             labels: {
-              color: '#FFFFFF',  // Changed to hex color
+              color: '#FFFFFF',
               padding: 20,
               font: {
                 size: 12,
@@ -94,7 +91,6 @@ export default function CustomerLocationChart({ customers }: CustomerLocationCha
                   lineWidth: 0,
                   hidden: false,
                   index: i,
-                  // Added text color options
                   fontColor: '#FFFFFF',
                   color: '#FFFFFF'
                 }))
@@ -121,10 +117,8 @@ export default function CustomerLocationChart({ customers }: CustomerLocationCha
       }
     }
 
-    // Create new chart instance
     chartInstance.current = new Chart(chartRef.current, config)
 
-    // Cleanup on unmount
     return () => {
       if (chartInstance.current) {
         chartInstance.current.destroy()
