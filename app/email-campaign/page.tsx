@@ -139,7 +139,7 @@ export default function EmailCampaignPage() {
               <Input
                 placeholder="Enter product name"
                 value={product}
-                onChange={(e) => setProduct(e.target.value)}
+                onChange={(e : any) => setProduct(e.target.value)}
                 disabled={isLoading}
               />
             </div>
@@ -149,7 +149,7 @@ export default function EmailCampaignPage() {
               <Input
                 placeholder="Enter target region"
                 value={region}
-                onChange={(e) => setRegion(e.target.value)}
+                onChange={(e : any) => setRegion(e.target.value)}
                 disabled={isLoading}
               />
             </div>

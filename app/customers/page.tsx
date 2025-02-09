@@ -36,7 +36,7 @@ export default async function CustomersPage() {
   const customerData = await getCustomers()
 
   // Debug: Log all customers and their purchase histories
-  customerData.forEach(customer => {
+  customerData.forEach((customer: { name: any; purchaseHistory: string | null }) => {
     console.log(`Customer ${customer.name}:`, {
       purchaseHistory: customer.purchaseHistory,
       extracted: extractPurchaseCount(customer.purchaseHistory)
@@ -44,7 +44,7 @@ export default async function CustomersPage() {
   })
 
   // Find customer with most purchases
-  const mostValuableCustomer = customerData.reduce((max, current) => {
+  const mostValuableCustomer = customerData.reduce((max: { purchaseHistory: string | null }, current: { purchaseHistory: string | null }) => {
     const currentValue = extractPurchaseCount(current.purchaseHistory)
     const maxValue = extractPurchaseCount(max.purchaseHistory)
 
@@ -52,7 +52,7 @@ export default async function CustomersPage() {
   }, customerData[0])
 
   // Calculate purchase counts by state
-  const stateStats = customerData.reduce((acc: { [key: string]: number }, customer) => {
+  const stateStats = customerData.reduce((acc: { [key: string]: number }, customer: { state: string; purchaseHistory: string | null }) => {
     const state = customer.state || 'Unknown'
     const purchases = extractPurchaseCount(customer.purchaseHistory)
     acc[state] = (acc[state] || 0) + purchases
@@ -92,7 +92,7 @@ export default async function CustomersPage() {
             <div>
               <p className="text-sm text-muted-foreground">Active States</p>
               <p className="text-2xl font-bold">
-                {new Set(customerData.map(c => c.state)).size}
+                {new Set(customerData.map((c: { state: any }) => c.state)).size}
               </p>
             </div>
             <div className="col-span-2 border-t pt-4 mt-2">
@@ -138,7 +138,7 @@ export default async function CustomersPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {customerData.map((customer) => (
+              {customerData.map((customer: { id: any; name: any; email: any; city: any; state: any; phone: any; purchaseHistory: any }) => (
                 <TableRow key={customer.id}>
                   <TableCell className="font-medium">{customer.name}</TableCell>
                   <TableCell>{customer.email}</TableCell>

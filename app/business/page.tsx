@@ -59,8 +59,7 @@ async function getPredictions(metrics: BusinessMetrics) {
     })
 
     const prediction = JSON.parse(completion.choices[0]?.message?.content || "{}")
-    
-    // Validate and provide fallback values if needed
+
     const fallbackPrediction = {
       growthRates: Array(6).fill(metrics.avgGrowthRate || 5),
       expenses: Array(6).fill(metrics.totalExpenses / 12 || 10000),
@@ -74,20 +73,17 @@ async function getPredictions(metrics: BusinessMetrics) {
     }
   } catch (error) {
     console.error("Failed to get predictions:", error)
-    // Return reasonable default predictions based on current metrics
     return {
-      growthRates: Array(6).fill(metrics.avgGrowthRate || 5),  // 5% growth default
-      expenses: Array(6).fill(metrics.totalExpenses / 12 || 10000),  // Monthly average or 10k default
-      satisfaction: Array(6).fill(metrics.avgSatisfaction || 7)  // 7/10 satisfaction default
+      growthRates: Array(6).fill(metrics.avgGrowthRate || 5), 
+      expenses: Array(6).fill(metrics.totalExpenses / 12 || 10000),
+      satisfaction: Array(6).fill(metrics.avgSatisfaction || 7)
     }
   }
 }
 
 export default async function BusinessPage() {
   const businessData = await getBusinessData()
-
-  // Calculate averages and totals
-  const metrics = businessData.reduce((acc, curr) => ({
+  const metrics = businessData.reduce((acc: { totalExpenses: any; avgGrowthRate: any; avgOrderValue: any; avgSatisfaction: any; totalCustomers: number }, curr: { businessExpenses: any; businessGrowthRate: any; averageOrderValue: any; customerSatisfactionScore: any }) => ({
     totalExpenses: acc.totalExpenses + (curr.businessExpenses || 0),
     avgGrowthRate: acc.avgGrowthRate + (curr.businessGrowthRate || 0),
     avgOrderValue: acc.avgOrderValue + (curr.averageOrderValue || 0),
@@ -175,7 +171,7 @@ export default async function BusinessPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {businessData.map((item) => (
+              {businessData.map((item: { id: any; name: any; businessExpenses: { toLocaleString: () => any }; businessGrowthRate: any; customerSatisfactionScore: any; averageOrderValue: any }) => (
                 <TableRow key={item.id}>
                   <TableCell className="font-medium">{item.name}</TableCell>
                   <TableCell>₹{item.businessExpenses?.toLocaleString()}</TableCell>
