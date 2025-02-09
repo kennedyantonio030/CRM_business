@@ -70,43 +70,34 @@ export async function POST(request: NextRequest) {
       }, { status: 401 });
     }
 
-    // Initialize Twitter client with provided bearer token
     const twitterClient = new Client(bearerToken);
 
-    // Define topics at the top level of the function so it's available in catch block
     let topics: string[] = [];
     
     try {
-      // Validate Twitter client
       if (!twitterClient) {
         return NextResponse.json({ 
           error: 'Twitter client not initialized' 
         }, { status: 500 });
       }
 
-      // Extract and store topics from request
       const { topics: requestTopics, filters } = await request.json() as {
         topics: string[];
         filters: Filter[];
       };
-      
-      // Assign to our top-level topics variable
       topics = requestTopics;
 
-      // Validate input
       if (!Array.isArray(topics) || topics.length === 0) {
         return NextResponse.json({ 
           error: 'Topics must be a non-empty array' 
         }, { status: 400 });
       }
 
-      // Build an advanced search query following X API guidelines
       const searchQuery = topics.map((topic: string) => {
         const formattedTopic = topic.includes(' ') ? `"${topic}"` : topic;
         return `(${formattedTopic})`; 
       }).join(' OR ');
 
-      // Add search operators for better results
       const enhancedQuery = `${searchQuery} -is:retweet -is:reply lang:en has:mentions min_faves:5`;
       
       console.log('Searching X with query:', enhancedQuery);

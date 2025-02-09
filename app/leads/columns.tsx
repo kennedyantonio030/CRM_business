@@ -18,7 +18,7 @@ export const columns: ColumnDef<Lead>[] = [
   {
     accessorKey: "name",
     header: "Name",
-    cell: ({ row }) => {
+    cell: ({ row } : any) => {
       const username = row.original.username;
       return (
         <div className="flex flex-col">
@@ -39,7 +39,7 @@ export const columns: ColumnDef<Lead>[] = [
   {
     accessorKey: "bio",
     header: "Bio",
-    cell: ({ row }) => (
+    cell: ({ row } : any) => (
       <div className="max-w-[300px] truncate" title={row.getValue("bio")}>
         {row.getValue("bio")}
       </div>
@@ -48,7 +48,7 @@ export const columns: ColumnDef<Lead>[] = [
   {
     accessorKey: "tweet",
     header: "Latest Tweet",
-    cell: ({ row }) => (
+    cell: ({ row } : any) => (
       <div className="max-w-[300px] truncate" title={row.getValue("tweet")}>
         {row.getValue("tweet")}
       </div>
@@ -57,14 +57,14 @@ export const columns: ColumnDef<Lead>[] = [
   {
     accessorKey: "followerCount",
     header: "Followers",
-    cell: ({ row }) => (
+    cell: ({ row } : any) => (
       <span>{Number(row.getValue("followerCount")).toLocaleString()}</span>
     ),
   },
   {
     accessorKey: "topics",
     header: "Matching Topics",
-    cell: ({ row }) => {
+    cell: ({ row } : any) => {
       const topics = row.getValue("topics") as string[];
       return (
         <div className="flex flex-wrap gap-1">

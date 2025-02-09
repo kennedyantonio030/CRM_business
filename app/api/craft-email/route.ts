@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const allCustomers = await db.select().from(customers).execute();
     console.log('All customers:', allCustomers.length);
     
-    const filteredCustomers = allCustomers.filter(customer => 
+    const filteredCustomers = allCustomers.filter((customer: { state: string; }) => 
       customer.state?.toLowerCase() === region.toLowerCase()
     );
     console.log('Filtered customers:', filteredCustomers.length);
@@ -60,9 +60,9 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    console.log('Starting to send emails to:', filteredCustomers.map(c => c.email));
+    console.log('Starting to send emails to:', filteredCustomers.map((c: { email: any; }) => c.email));
 
-    const emailPromises = filteredCustomers.map(async (customer) => {
+    const emailPromises = filteredCustomers.map(async (customer: { email: any; name: any; }) => {
       try {
         console.log(`Attempting to send email to ${customer.email}`);
         const result = await resend.emails.send({
@@ -87,8 +87,8 @@ export async function POST(request: NextRequest) {
 
     const results = await Promise.all(emailPromises);
 
-    const successfulSends = results.filter(result => result.success).length;
-    const failedSends = results.filter(result => !result.success).length;
+    const successfulSends = results.filter((result: { success: any; }) => result.success).length;
+    const failedSends = results.filter((result: { success: any; }) => !result.success).length;
 
     console.log(`Successful sends: ${successfulSends}, Failed sends: ${failedSends}`);
 
