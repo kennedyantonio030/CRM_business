@@ -13,7 +13,6 @@ export async function POST(request: NextRequest) {
   try {
     const { lead, matchedTopics, template } = await request.json();
 
-    // Get template style
     const styles = {
       casual: "friendly and conversational",
       professional: "formal and business-focused",

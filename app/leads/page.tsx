@@ -74,7 +74,6 @@ export default function LeadsPage() {
     bearerToken: '',
   });
 
-  // Check for API keys on component mount
   useEffect(() => {
     const savedKeys = localStorage.getItem('x_api_keys');
     if (!savedKeys) {
@@ -128,9 +127,9 @@ export default function LeadsPage() {
       if (!response.ok) throw new Error('Failed to fetch leads');
 
       const data = await response.json();
-      setLeads(prevLeads => {
+      setLeads((prevLeads: any[]) => {
         const newLeads = data.leads.filter(
-          (lead: Lead) => !prevLeads.find(p => p.id === lead.id)
+          (lead: Lead) => !prevLeads.find((p: { id: string; }) => p.id === lead.id)
         );
         return [...newLeads, ...prevLeads];
       });
@@ -167,7 +166,7 @@ export default function LeadsPage() {
   };
 
   const removeTopic = (topic: string) => {
-    setTopics(topics.filter(t => t !== topic));
+    setTopics(topics.filter((t: string) => t !== topic));
   };
 
   const startMonitoring = async () => {
@@ -199,8 +198,8 @@ export default function LeadsPage() {
 
   const generateMessage = async (lead: LeadWithMessage) => {
     try {
-      setLeads(prevLeads => 
-        prevLeads.map(l => 
+      setLeads((prevLeads: any[]) => 
+        prevLeads.map((l: { id: string; }) => 
           l.id === lead.id 
             ? { ...l, isGenerating: true }
             : l
@@ -223,8 +222,8 @@ export default function LeadsPage() {
 
       const data = await response.json();
       
-      setLeads(prevLeads => 
-        prevLeads.map(l => 
+      setLeads((prevLeads: any[]) => 
+        prevLeads.map((l: { id: string; }) => 
           l.id === lead.id 
             ? { ...l, generatedMessage: data.message, isGenerating: false }
             : l
@@ -238,9 +237,8 @@ export default function LeadsPage() {
 
     } catch (error) {
       console.error('Error generating message:', error);
-      // Reset loading state on error
-      setLeads(prevLeads => 
-        prevLeads.map(l => 
+      setLeads((prevLeads: any[]) => 
+        prevLeads.map((l: { id: string; }) => 
           l.id === lead.id 
             ? { ...l, isGenerating: false }
             : l
@@ -265,10 +263,10 @@ export default function LeadsPage() {
             <div className="flex items-center gap-2">
               <select
                 value={selectedTemplate}
-                onChange={(e) => setSelectedTemplate(e.target.value)}
+                onChange={(e: { target: { value: any; }; }) => setSelectedTemplate(e.target.value)}
                 className="h-8 rounded-md border border-input bg-background px-2 text-sm"
               >
-                {messageTemplates.map(template => (
+                {messageTemplates.map((template: { id: any; name: any; }) => (
                   <option key={template.id} value={template.id}>
                     {template.name}
                   </option>
@@ -332,7 +330,7 @@ export default function LeadsPage() {
                 id="apiKey"
                 type="password"
                 value={apiKeys.apiKey}
-                onChange={(e) => setApiKeys(prev => ({ ...prev, apiKey: e.target.value }))}
+                onChange={(e: { target: { value: any; }; }) => setApiKeys((prev: any) => ({ ...prev, apiKey: e.target.value }))}
                 placeholder="Enter your X API Key"
               />
             </div>
@@ -342,7 +340,7 @@ export default function LeadsPage() {
                 id="apiSecret"
                 type="password"
                 value={apiKeys.apiSecret}
-                onChange={(e) => setApiKeys(prev => ({ ...prev, apiSecret: e.target.value }))}
+                onChange={(e: { target: { value: any; }; }) => setApiKeys((prev: any) => ({ ...prev, apiSecret: e.target.value }))}
                 placeholder="Enter your X API Secret"
               />
             </div>
@@ -352,7 +350,7 @@ export default function LeadsPage() {
                 id="bearerToken"
                 type="password"
                 value={apiKeys.bearerToken}
-                onChange={(e) => setApiKeys(prev => ({ ...prev, bearerToken: e.target.value }))}
+                onChange={(e: { target: { value: any; }; }) => setApiKeys((prev: any) => ({ ...prev, bearerToken: e.target.value }))}
                 placeholder="Enter your X Bearer Token"
               />
             </div>
@@ -409,9 +407,9 @@ export default function LeadsPage() {
               <div className="flex space-x-2">
                 <Input
                   value={newTopic}
-                  onChange={(e) => setNewTopic(e.target.value)}
+                  onChange={(e: { target: { value: any; }; }) => setNewTopic(e.target.value)}
                   placeholder="Enter topic to monitor..."
-                  onKeyPress={(e) => e.key === 'Enter' && addTopic()}
+                  onKeyPress={(e: { key: string; }) => e.key === 'Enter' && addTopic()}
                 />
                 <Button onClick={addTopic} size="icon">
                   <Plus className="h-4 w-4" />
@@ -420,7 +418,7 @@ export default function LeadsPage() {
               
               <AnimatePresence>
                 <div className="flex flex-wrap gap-2">
-                  {topics.map(topic => (
+                  {topics.map((topic: string) => (
                     <motion.div
                       key={topic}
                       initial={{ opacity: 0, scale: 0.8 }}
@@ -462,7 +460,7 @@ export default function LeadsPage() {
                 </div>
                 <Slider
                   value={[filters.minFollowers]}
-                  onValueChange={([value]) => setFilters(f => ({ ...f, minFollowers: value }))}
+                  onValueChange={([value]) => setFilters((f: any) => ({ ...f, minFollowers: value }))}
                   max={10000}
                   step={100}
                 />
@@ -480,7 +478,7 @@ export default function LeadsPage() {
                 </div>
                 <Slider
                   value={[filters.minEngagement]}
-                  onValueChange={([value]) => setFilters(f => ({ ...f, minEngagement: value }))}
+                  onValueChange={([value]) => setFilters((f: any) => ({ ...f, minEngagement: value }))}
                   max={100}
                   step={1}
                 />
