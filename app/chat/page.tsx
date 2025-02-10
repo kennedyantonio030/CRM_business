@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -22,7 +21,7 @@ const ChatPage = () => {
 
     setIsLoading(true)
     const newMessage: ChatMessage = { role: "user", content: message }
-    setChatHistory((prev) => [...prev, newMessage])
+    setChatHistory((prev : any) => [...prev, newMessage])
 
     try {
       const response = await fetch('/api/query-csv', {
@@ -42,7 +41,7 @@ const ChatPage = () => {
         role: "assistant", 
         content: data.reply
       }
-      setChatHistory((prev) => [...prev, aiMessage])
+      setChatHistory((prev : any) => [...prev, aiMessage])
     } catch (error) {
       console.error('Error sending message:', error)
       toast({
@@ -64,7 +63,7 @@ const ChatPage = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {chatHistory.map((msg, index) => (
+            {chatHistory.map((msg: { role: string; content: any }, index: any)  => (
               <div key={index} className={`${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
                 <span className={`inline-block p-2 rounded ${
                   msg.role === 'user' ? 'bg-blue-500 text-white' : 'bg-green-500 text-white'
@@ -76,9 +75,9 @@ const ChatPage = () => {
             <div className="flex space-x-2">
               <Input
                 value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                onChange={(e : any) => setMessage(e.target.value)}
                 placeholder="Ask questions about your customer data..."
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                onKeyPress={(e : any) => e.key === 'Enter' && handleSendMessage()}
                 disabled={isLoading}
               />
               <Button onClick={handleSendMessage} disabled={isLoading}>
